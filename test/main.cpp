@@ -33,10 +33,10 @@ inline auto measure_block(const std::function<void ()> &f) {
 class observerTest {
 public:
 	prop::observable_property<int> someOtherVal {
-		WILLSET {
+		WILL_SET(newValue) {
 			//std::cout << "will set from " << currentValue << " to " << newValue << std::endl;
 		},
-		DIDSET {
+		DID_SET(oldValue) {
 			//std::cout << "did set from " << oldValue << " to " << newValue << std::endl;
 		}
 	};

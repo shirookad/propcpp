@@ -4,8 +4,8 @@
 
 #include <functional>
 
-#define WILLSET [this](auto newValue)
-#define DIDSET [this](auto oldValue)
+#define WILL_SET(new_value_name) [this](auto new_value_name)
+#define DID_SET(old_value_name) [this](auto old_value_name)
 #define GET [this]()
 
 namespace prop {
