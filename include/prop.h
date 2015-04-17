@@ -46,7 +46,7 @@ namespace prop {
 		
 		inline T &operator = (const T &newValue) {
 			willSet(newValue);
-			T oldValue { m_value };
+			T oldValue = std::move(m_value);
 			m_value = newValue;
 			didSet(oldValue);
 			return m_value;
