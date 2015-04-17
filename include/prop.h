@@ -23,23 +23,25 @@ namespace prop {
 		constexpr inline property() {  }
 		constexpr inline property(const T &val) : value(val) {  }
 		
-		constexpr inline T &operator = (const T &newValue) { return value = newValue; }
+		inline T &operator = (const T &newValue) { return value = newValue; }
 		constexpr inline operator T () const { return value; }
 		
 		constexpr property(const property<T> &) = delete;
 		constexpr property& operator = (const property<T> &) = delete;	
 	};
-	
+
 	template <class T>
 	class observable_property {
+		using observable_property_fnc_t = std::function<void (const T &)>;
+	
 		T value;
-		std::function<void (const T &)> willSet, didSet;
+		observable_property_fnc_t willSet, didSet;
 	
 	public:
-		constexpr inline observable_property(const std::function<void (const T &)> &_willSet, const std::function<void (const T &)> &_didSet) :
+		constexpr inline observable_property(const observable_property_fnc_t &_willSet, const observable_property_fnc_t &_didSet) :
 			willSet(_willSet), didSet(_didSet) {  }
 		
-		constexpr inline T &operator = (const T &newValue) {
+		inline T &operator = (const T &newValue) {
 			willSet(newValue);
 			T oldValue { value };
 			value = newValue;
@@ -54,10 +56,12 @@ namespace prop {
 	
 	template <class T>
 	class computed_property {
-		std::function<T ()> computeFunction;
+		using computed_property_fnc_t = std::function<T ()>;		
+		
+		computed_property_fnc_t computeFunction;
 	
 	public:
-		constexpr inline computed_property(const std::function<T ()> &_computeFunction) :
+		constexpr inline computed_property(const computed_property_fnc_t &_computeFunction) :
 			computeFunction(_computeFunction) {  }
 		
 		constexpr inline operator T () const { return computeFunction(); }
