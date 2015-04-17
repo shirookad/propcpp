@@ -50,7 +50,7 @@ namespace prop {
 		constexpr inline operator const T& () const { return m_value; }
 		constexpr inline operator T& () { return m_value; }
 
-		inline T& set(const T &value) { return m_value = value; }
+		inline T& set(const T &value) { return (*this = value); }
 		constexpr inline T get() const { return m_value; }
 		
 		constexpr observable_property(const observable_property<T> &) = delete;
