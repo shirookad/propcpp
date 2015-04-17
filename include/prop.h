@@ -17,14 +17,17 @@ namespace prop {
 	
 	template <class T>
 	class property {
-		T value;
+		T m_value;
 	
 	public:
 		constexpr inline property() {  }
-		constexpr inline property(const T &val) : value(val) {  }
+		constexpr inline property(const T &val) : m_value(val) {  }
 		
-		inline T &operator = (const T &newValue) { return value = newValue; }
-		constexpr inline operator T () const { return value; }
+		inline T &operator = (const T &newValue) { return m_value = newValue; }
+		constexpr inline operator const T& () const { return m_value; }
+		constexpr inline operator T& () { return m_value; }
+		
+		constexpr inline const T &value() const { return m_value; }
 		
 		constexpr property(const property<T> &) = delete;
 		constexpr property& operator = (const property<T> &) = delete;	
@@ -34,7 +37,7 @@ namespace prop {
 	class observable_property {
 		using observable_property_fnc_t = std::function<void (const T &)>;
 	
-		T value;
+		T m_value;
 		observable_property_fnc_t willSet, didSet;
 	
 	public:
@@ -43,13 +46,16 @@ namespace prop {
 		
 		inline T &operator = (const T &newValue) {
 			willSet(newValue);
-			T oldValue { value };
-			value = newValue;
+			T oldValue { m_value };
+			m_value = newValue;
 			didSet(oldValue);
-			return value;
+			return m_value;
 		}
-		constexpr inline operator T () const { return value; }
+		constexpr inline operator const T& () const { return m_value; }
+		constexpr inline operator T& () { return m_value; }
 
+		constexpr inline const T &value() const { return m_value; }
+		
 		constexpr observable_property(const observable_property<T> &) = delete;
 		constexpr observable_property& operator = (const observable_property<T> &) = delete;	
 	};
@@ -65,6 +71,8 @@ namespace prop {
 			computeFunction(_computeFunction) {  }
 		
 		constexpr inline operator T () const { return computeFunction(); }
+		
+		constexpr inline const T &value() const { return computeFunction(); }
 		
 		constexpr computed_property(const computed_property<T> &) = delete;
 		constexpr computed_property& operator = (const computed_property<T> &) = delete;	

@@ -46,6 +46,11 @@ public:
 			return 5;
 		}
 	};
+	
+	prop::observable_property<std::string> strVal {
+		WILL_SET(newValue) { std::cout << "Will set from " << strVal.value() << " to " << newValue << std::endl; },
+		DID_SET(oldValue) { std::cout << "Did set from " << oldValue << " to " << strVal.value() << std::endl; }
+	};
 };
 
 int main(int argc, char *argv[]) {
@@ -76,6 +81,8 @@ int main(int argc, char *argv[]) {
 			t4.someOtherVal = 5;
 		}
 	});
+	
+	t4.strVal = "Hello, World";
 	
 	std::cout << "test1: " << test1nanos << std::endl;
 	std::cout << "test2: " << test2nanos << std::endl;
