@@ -9,12 +9,6 @@
 #define GET [this]()
 
 namespace prop {
-	enum visibility : int {
-		vprivate = 0,
-		vprotected = 1,
-		vpublic = 2
-	};
-	
 	template <class T>
 	class property {
 		T m_value;
