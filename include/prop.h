@@ -21,7 +21,8 @@ namespace prop {
 		constexpr inline operator const T& () const { return m_value; }
 		constexpr inline operator T& () { return m_value; }
 		
-		constexpr inline const T &value() const { return m_value; }
+		inline void set(const T &value) { m_value = value; }
+		constexpr inline T get() const { return m_value; }
 		
 		constexpr property(const property<T> &) = delete;
 		constexpr property& operator = (const property<T> &) = delete;	
@@ -48,7 +49,8 @@ namespace prop {
 		constexpr inline operator const T& () const { return m_value; }
 		constexpr inline operator T& () { return m_value; }
 
-		constexpr inline const T &value() const { return m_value; }
+		inline void set(const T &value) { m_value = value; }
+		constexpr inline T get() const { return m_value; }
 		
 		constexpr observable_property(const observable_property<T> &) = delete;
 		constexpr observable_property& operator = (const observable_property<T> &) = delete;	
@@ -65,8 +67,7 @@ namespace prop {
 			computeFunction(_computeFunction) {  }
 		
 		constexpr inline operator T () const { return computeFunction(); }
-		
-		constexpr inline const T &value() const { return computeFunction(); }
+		constexpr inline T get() const { return computeFunction(); }
 		
 		constexpr computed_property(const computed_property<T> &) = delete;
 		constexpr computed_property& operator = (const computed_property<T> &) = delete;	

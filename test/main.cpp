@@ -48,8 +48,8 @@ public:
 	};
 	
 	prop::observable_property<std::string> strVal {
-		WILL_SET(newValue) { std::cout << "Will set from " << strVal.value() << " to " << newValue << std::endl; },
-		DID_SET(oldValue) { std::cout << "Did set from " << oldValue << " to " << strVal.value() << std::endl; }
+		WILL_SET(newValue) { std::cout << "Will set from " << strVal.get() << " to " << newValue << std::endl; },
+		DID_SET(oldValue) { std::cout << "Did set from " << oldValue << " to " << strVal.get() << std::endl; }
 	};
 };
 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 	test3 t3;
 	auto test3nanos = measure_block([&t3]() {
 		for (unsigned long long i = 0; i < 1000000; ++i) {
-			t3.count = 5;
+			t3.count.set(5);
 		}
 	});
 
@@ -82,7 +82,8 @@ int main(int argc, char *argv[]) {
 		}
 	});
 	
-	t4.strVal = "Hello, World";
+	t4.strVal = "Hello";
+	t4.strVal.set(t4.strVal.get().append(", World"));
 	
 	std::cout << "test1: " << test1nanos << std::endl;
 	std::cout << "test2: " << test2nanos << std::endl;
