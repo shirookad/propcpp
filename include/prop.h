@@ -18,8 +18,8 @@ namespace prop {
 		constexpr inline property(const T &val) : m_value(val) {  }
 		
 		inline T &operator = (const T &newValue) { return m_value = newValue; }
-		constexpr inline operator const T& () const { return m_value; }
-		constexpr inline operator T& () { return m_value; }
+		constexpr explicit inline operator const T& () const { return m_value; }
+		constexpr explicit inline operator T& () { return m_value; }
 		
 		inline T& set(const T &value) { return m_value = value; }
 		constexpr inline T get() const { return m_value; }
@@ -47,8 +47,8 @@ namespace prop {
 			didSet(oldValue);
 			return m_value;
 		}
-		constexpr inline operator const T& () const { return m_value; }
-		constexpr inline operator T& () { return m_value; }
+		constexpr explicit inline operator const T& () const { return m_value; }
+		constexpr explicit inline operator T& () { return m_value; }
 
 		inline T& set(const T &value) { return (*this = value); }
 		constexpr inline T get() const { return m_value; }
