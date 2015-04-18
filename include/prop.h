@@ -34,7 +34,7 @@ namespace prop {
 		using observable_property_fnc_t = std::function<void (const T &)>;
 	
 		T m_value;
-		observable_property_fnc_t willSet, didSet;
+		const observable_property_fnc_t willSet, didSet;
 	
 	public:
 		constexpr inline observable_property(const observable_property_fnc_t &_willSet, const observable_property_fnc_t &_didSet) :
@@ -62,7 +62,7 @@ namespace prop {
 	class computed_property {
 		using computed_property_fnc_t = std::function<T ()>;		
 		
-		computed_property_fnc_t computeFunction;
+		const computed_property_fnc_t computeFunction;
 	
 	public:
 		constexpr inline computed_property(const computed_property_fnc_t &_computeFunction) :
