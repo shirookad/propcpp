@@ -67,8 +67,8 @@ namespace prop {
 		constexpr inline computed_property(const computed_property_fnc_t &_computeFunction) :
 			computeFunction(_computeFunction) {  }
 		
-		constexpr inline operator T () const { return computeFunction(); }
-		constexpr inline T get() const { return computeFunction(); }
+		constexpr inline operator T () const { return std::move(computeFunction()); }
+		constexpr inline T get() const { return std::move(computeFunction()); }
 		
 		constexpr computed_property(const computed_property<T> &) = delete;
 		constexpr computed_property(computed_property<T>&&) = delete;
