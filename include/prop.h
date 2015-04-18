@@ -11,17 +11,18 @@
 namespace prop {
 	template <class T>
 	class property {
+		using param_t = typename std::conditional<std::is_fundamental<T>::value, T, const T&>::type;
+		
 		T m_value;
 	
 	public:
 		constexpr inline property() {  }
-		constexpr inline property(const T &val) : m_value(val) {  }
+		constexpr inline property(param_t value) : m_value(value) {  }
 		
-		inline T &operator = (const T &newValue) { return m_value = newValue; }
-		constexpr explicit inline operator const T& () const { return m_value; }
+		constexpr explicit inline operator param_t () const { return m_value; }
 		
-		inline T& set(const T &value) { return m_value = value; }
-		constexpr inline T get() const { return m_value; }
+		inline T& set(param_t value) { return m_value = value; }
+		constexpr inline param_t get() const { return m_value; }
 		
 		constexpr property(const property<T> &) = delete;
 		constexpr property(property<T>&&) = delete;
@@ -31,7 +32,8 @@ namespace prop {
 	template <class T>
 	class observable_property {
 		using observable_property_fnc_t = std::function<void (const T &)>;
-	
+		using param_t = typename std::conditional<std::is_fundamental<T>::value, T, const T&>::type;
+		
 		T m_value;
 		const observable_property_fnc_t willSet, didSet;
 	
@@ -39,17 +41,16 @@ namespace prop {
 		constexpr inline observable_property(const observable_property_fnc_t &_willSet, const observable_property_fnc_t &_didSet) :
 			willSet(_willSet), didSet(_didSet) {  }
 		
-		inline T &operator = (const T &newValue) {
-			willSet(newValue);
+		constexpr explicit inline operator param_t () const { return m_value; }
+
+		inline T& set(const param_t value) {
+			willSet(value);
 			T oldValue = std::move(m_value);
-			m_value = newValue;
+			m_value = value;
 			didSet(oldValue);
 			return m_value;
 		}
-		constexpr explicit inline operator const T& () const { return m_value; }
-
-		inline T& set(const T &value) { return (*this = value); }
-		constexpr inline T get() const { return m_value; }
+		constexpr inline param_t get() const { return m_value; }
 		
 		constexpr observable_property(const observable_property<T> &) = delete;
 		constexpr observable_property(observable_property<T>&&) = delete;
@@ -76,19 +77,20 @@ namespace prop {
 	
 	template <class O, class T>
 	class readonly_property {
+		using param_t = typename std::conditional<std::is_fundamental<T>::value, T, const T&>::type;
+		
 		T m_value;
 		
 		inline T& set(const T& value) { return m_value = value; }
-		inline T& operator = (const T& value) { return m_value = value; }
 		
 		friend O;
 		
 	public:
-		constexpr inline readonly_property(const T& value) : m_value(value) {  }
+		constexpr inline readonly_property(param_t value) : m_value(value) {  }
 		
-		constexpr explicit inline operator const T& () const { return m_value; }
+		constexpr explicit inline operator param_t () const { return m_value; }
 
-		constexpr inline const T& get() const { return m_value; }
+		constexpr inline param_t get() const { return m_value; }
 		
 		constexpr readonly_property(const readonly_property<O, T>&) = delete;
 		constexpr readonly_property(readonly_property<O, T>&&) = delete;

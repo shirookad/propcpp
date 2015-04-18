@@ -54,7 +54,7 @@ public:
 	
 	prop::readonly_property<observerTest, int> intVal { 5 };
 	
-	observerTest() { intVal = 3; }
+	observerTest() { intVal.set(3); }
 };
 
 int main(int argc, char *argv[]) {
@@ -82,12 +82,12 @@ int main(int argc, char *argv[]) {
 	observerTest t4;
 	auto test4nanos = measure_block([&t4]() {
 		for (unsigned long long i = 0; i < 1000000; ++i) {
-			t4.someOtherVal = 5;
+			t4.someOtherVal.set(5);
 		}
 	});
 	
-	t4.strVal = "Hello";
-	t4.strVal.set(t4.strVal.get().append(", World"));
+	t4.strVal.set("Hello");
+	t4.strVal.set(t4.strVal.get() + ", World");
 	
 	int a = (int)t4.intVal;
 	
