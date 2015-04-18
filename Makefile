@@ -1,2 +1,2 @@
-all: test/main.cpp
-	g++ -std=gnu++14 -Iinclude test/main.cpp
+all: main.cpp
+	g++ -std=gnu++14 -Iinclude main.cpp
