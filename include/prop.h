@@ -19,7 +19,6 @@ namespace prop {
 		
 		inline T &operator = (const T &newValue) { return m_value = newValue; }
 		constexpr explicit inline operator const T& () const { return m_value; }
-		constexpr explicit inline operator T& () { return m_value; }
 		
 		inline T& set(const T &value) { return m_value = value; }
 		constexpr inline T get() const { return m_value; }
@@ -48,7 +47,6 @@ namespace prop {
 			return m_value;
 		}
 		constexpr explicit inline operator const T& () const { return m_value; }
-		constexpr explicit inline operator T& () { return m_value; }
 
 		inline T& set(const T &value) { return (*this = value); }
 		constexpr inline T get() const { return m_value; }
@@ -75,6 +73,65 @@ namespace prop {
 		constexpr computed_property(computed_property<T>&&) = delete;
 		constexpr computed_property& operator = (const computed_property<T> &) = delete;	
 	};
+	
+	template <class O, class T>
+	class readonly_property {
+		T m_value;
+		
+		inline T& set(const T& value) { return m_value = value; }
+		inline T& operator = (const T& value) { return m_value = value; }
+		
+		friend O;
+		
+	public:
+		constexpr inline readonly_property(const T& value) : m_value(value) {  }
+		
+		constexpr explicit inline operator const T& () const { return m_value; }
+
+		constexpr inline const T& get() const { return m_value; }
+		
+		constexpr readonly_property(const readonly_property<O, T>&) = delete;
+		constexpr readonly_property(readonly_property<O, T>&&) = delete;
+		constexpr readonly_property<O, T>& operator = (const readonly_property<O, T>&) = delete;
+	};
 }
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -51,6 +51,10 @@ public:
 		WILL_SET(newValue) { std::cout << "Will set from " << strVal.get() << " to " << newValue << std::endl; },
 		DID_SET(oldValue) { std::cout << "Did set from " << oldValue << " to " << strVal.get() << std::endl; }
 	};
+	
+	prop::readonly_property<observerTest, int> intVal { 5 };
+	
+	observerTest() { intVal = 3; }
 };
 
 int main(int argc, char *argv[]) {
@@ -84,6 +88,8 @@ int main(int argc, char *argv[]) {
 	
 	t4.strVal = "Hello";
 	t4.strVal.set(t4.strVal.get().append(", World"));
+	
+	int a = (int)t4.intVal;
 	
 	std::cout << "test1: " << test1nanos << std::endl;
 	std::cout << "test2: " << test2nanos << std::endl;
